@@ -220,5 +220,72 @@ class Browser:
 
 
 # ============================================================================
+# Context
+# ============================================================================
+
+
+class PageObject:
+    """Describes a set of page objects/web elements"""
+    __slots__ = ('_browser', '_objmap', '_parent')
+
+    # Data descriptors
+    name = None
+
+    def __init__(self, parent=None, *, browser=None, factory=None):
+        self._parent = parent
+        self._browser = browser
+        self._objmap = dict() if mapfunc is None else mapfunc()
+
+    def __setitem__(self, key, val):
+        if key not in self._objmap:
+            raise KeyError(key)
+        self._objmap[key] = val
+
+    def __getitem__(self, key):
+        return self._objmap[key]
+
+    def __iter__(self):
+        return iter(self._objmap.values())
+
+    def __len__(self):
+        return len(self._objmap)
+
+    def __bool__(self):
+        """Return whether the page object is valid"""
+
+    def add(self, obj):
+        """Add a new child page object/element"""
+
+    def children(self):
+        """docstring for children"""
+
+    def reload(self):
+        """Reload the page object"""
+        pass
+
+    @property
+    def xpath(self):
+        """Calculate and return the xpath to the page object"""
+        pass
+
+    @property
+    def browser(self):
+        """Return the browser"""
+        return self._browser
+
+    @property
+    def visible(self):
+        """Return True if the page object is visible"""
+
+    @property
+    def parent(self):
+        """Return the parent page object"""
+
+    @property
+    def root(self):
+        """Return the root page object"""
+
+
+# ============================================================================
 #
 # ============================================================================
