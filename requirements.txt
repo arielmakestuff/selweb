@@ -1,3 +1,4 @@
 selenium
 lxml
 beautifulsoup4
+yarl
