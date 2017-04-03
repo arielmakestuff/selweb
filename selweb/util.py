@@ -15,6 +15,7 @@
 
 # Stdlib imports
 from collections.abc import Sequence
+from contextlib import contextmanager
 
 # Third-party imports
 
@@ -48,6 +49,12 @@ def xpath_clsmatch(clsname, *other):
     item = "contains(concat(' ', normalize-space(@class), ' '), ' {} ')"
     allcfunc = [item.format(n) for n in clsnames]
     return ' and '.join(allcfunc)
+
+
+@contextmanager
+def noop_context():
+    """A do nothing context"""
+    yield
 
 
 # ============================================================================

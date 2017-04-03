@@ -14,6 +14,7 @@
 
 
 # Stdlib imports
+from abc import ABCMeta, abstractmethod
 from contextlib import contextmanager
 from enum import Enum
 from functools import partial
@@ -27,17 +28,22 @@ from selenium.webdriver.support.ui import WebDriverWait
 from yarl import URL
 
 # Local imports
-from .browserdriver import BrowserDriver
+from .driver import BrowserDriver
 
 
 # ============================================================================
-# Browser
+# Globals
 # ============================================================================
 
 
 class HTMLProperty(Enum):
     inner = 'innerHTML'
     outer = 'outerHTML'
+
+
+# ============================================================================
+# Browser
+# ============================================================================
 
 
 class WaitFor:
@@ -217,6 +223,159 @@ class Browser:
     def title(self):
         """Page title"""
         return self.selenium_driver.title
+
+    @property
+    def source(self):
+        """Retrieve page source"""
+        return self.selenium_driver.page_source
+
+
+# ============================================================================
+# Context
+# ============================================================================
+
+
+class PageObject(metaclass=ABCMeta):
+    """Describes a set of web elements"""
+
+    # --------------------
+    # General methods
+    # --------------------
+
+    @abstractmethod
+    def __bool__(self):
+        """Return whether the page object is valid"""
+        pass
+
+    @abstractmethod
+    def reload(self):
+        """Reload the page object"""
+        pass
+
+    @property
+    @abstractmethod
+    def name(self):
+        """Retrieve object's name
+
+        This is used as a key on the object's parent
+
+        """
+        pass
+
+    @property
+    @abstractmethod
+    def source(self):
+        """Retrieve object's source"""
+        pass
+
+    @property
+    @abstractmethod
+    def xpath(self):
+        """Calculate and return the xpath to the page object"""
+        pass
+
+    @property
+    @abstractmethod
+    def absxpath(self):
+        """Calculate and return the absolute xpath to the page object"""
+        pass
+
+    @property
+    @abstractmethod
+    def browser(self):
+        """Return the browser"""
+        pass
+
+    @property
+    @abstractmethod
+    def visible(self):
+        """Return True if the page object is visible"""
+        pass
+
+    @property
+    @abstractmethod
+    def page(self):
+        """Return the object's page"""
+        pass
+
+    @property
+    @abstractmethod
+    def parent(self):
+        """Return the parent page object"""
+        pass
+
+    @parent.setter
+    @abstractmethod
+    def parent(self, parent):
+        """Set the parent page object"""
+        pass
+
+
+# ============================================================================
+# Container
+# ============================================================================
+
+
+class CompositePageObject(PageObject):
+
+    # --------------------
+    # Container methods
+    # --------------------
+
+    @abstractmethod
+    def __getitem__(self, name):
+        """Retrieve a child page object by name"""
+        pass
+
+    @abstractmethod
+    def __delitem__(self, name):
+        """Remove a child page object by name"""
+        pass
+
+    @abstractmethod
+    def __iter__(self):
+        """Iterate over names of child page objects"""
+        pass
+
+    @abstractmethod
+    def __len__(self):
+        """Return the number of child page objects"""
+        pass
+
+    @abstractmethod
+    def add(self, obj):
+        """Add a new child page object"""
+        pass
+
+    @abstractmethod
+    def clear(self):
+        """Remove all child page objects"""
+        pass
+
+    @abstractmethod
+    def children(self):
+        """Iterator over child page objects"""
+        pass
+
+
+class Page(CompositePageObject):
+
+    @abstractmethod
+    def go(self):
+        """Retrieve the page"""
+        pass
+
+    @property
+    @abstractmethod
+    def url(self):
+        """Return the current page's location"""
+        pass
+
+    @property
+    @abstractmethod
+    def parser(self):
+        """Return an lxml parser"""
+        pass
 
 
 # ============================================================================

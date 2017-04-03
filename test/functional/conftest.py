@@ -21,7 +21,7 @@ import pytest
 
 # Local imports
 from selweb import core
-from selweb.browserdriver import PhantomJSDriver
+from selweb.driver import PhantomJSDriver
 
 
 # ============================================================================
