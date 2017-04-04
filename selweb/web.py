@@ -256,7 +256,7 @@ class WebPage(CompositeWebObject):
         return self._url
 
     # --------------------
-    # PageObject method'utf-8's
+    # PageObject methods
     # --------------------
 
     def reload(self):
@@ -266,10 +266,10 @@ class WebPage(CompositeWebObject):
             self._parser = html.fromstring(s)
             self.clear()
 
-    @property
-    def source(self):
-        """Retrieve page source"""
-        return self._source
+    # @property
+    # def source(self):
+    #     """Retrieve page source"""
+    #     return self._source
 
     @property
     def absxpath(self):
@@ -281,15 +281,15 @@ class WebPage(CompositeWebObject):
         """Return the browser"""
         return self._browser
 
-    @property
-    def visible(self):
-        """Return True if the page object is visible"""
-        return self.browser.selenium_driver.is_displayed()
+    # @property
+    # def visible(self):
+    #     """Return True if the page object is visible"""
+    #     return self.browser.selenium_driver.is_displayed()
 
     @property
     def page(self):
         """Return the object's page"""
-        return self
+        return self if self.parent is None else super().page
 
     @property
     def parser(self):
