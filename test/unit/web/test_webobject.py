@@ -27,21 +27,6 @@ from selweb.web import WebObject
 
 
 # ============================================================================
-# Fixtures
-# ============================================================================
-
-
-@pytest.fixture
-def webgroup():
-    """docstring for browser_driver"""
-
-    class TestCompositePageObject(CompositePageObject):
-        pass
-
-    return TestCompositePageObject
-
-
-# ============================================================================
 # Test __init__
 # ============================================================================
 
