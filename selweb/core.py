@@ -49,10 +49,12 @@ class HTMLProperty(Enum):
 class WaitFor:
     __slots__ = ('_parent', )
 
+    def __init__(self, *, parent=None):
+       self._parent = parent
+
     def __get__(self, obj, type=None):
         """docstring for __get__"""
-        self._parent = obj
-        return self
+        return self.__class__(parent=obj)
 
     def __call__(self, condition_func, *, xpath=None, timeout=1):
         funcarg = [(By.XPATH, xpath)] if xpath is not None else []
@@ -181,7 +183,7 @@ class Browser:
         el = el_or_xpath
         if isinstance(el, str):
             el = self.element(el)
-        return el.get_attribute(f"{htmlproperty.value}")
+        return el.get_attribute(htmlproperty.value)
 
     def go(self, url, *, timeout=1):
         """Visit a url"""
@@ -245,12 +247,12 @@ class PageObject(metaclass=ABCMeta):
     @abstractmethod
     def __bool__(self):
         """Return whether the page object is valid"""
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def reload(self):
         """Reload the page object"""
-        pass
+        raise NotImplementedError
 
     @property
     @abstractmethod
@@ -260,55 +262,55 @@ class PageObject(metaclass=ABCMeta):
         This is used as a key on the object's parent
 
         """
-        pass
+        raise NotImplementedError
 
     @property
     @abstractmethod
     def source(self):
         """Retrieve object's source"""
-        pass
+        raise NotImplementedError
 
     @property
     @abstractmethod
     def xpath(self):
         """Calculate and return the xpath to the page object"""
-        pass
+        raise NotImplementedError
 
     @property
     @abstractmethod
     def absxpath(self):
         """Calculate and return the absolute xpath to the page object"""
-        pass
+        raise NotImplementedError
 
     @property
     @abstractmethod
     def browser(self):
         """Return the browser"""
-        pass
+        raise NotImplementedError
 
     @property
     @abstractmethod
     def visible(self):
         """Return True if the page object is visible"""
-        pass
+        raise NotImplementedError
 
     @property
     @abstractmethod
     def page(self):
         """Return the object's page"""
-        pass
+        raise NotImplementedError
 
     @property
     @abstractmethod
     def parent(self):
         """Return the parent page object"""
-        pass
+        raise NotImplementedError
 
     @parent.setter
     @abstractmethod
     def parent(self, parent):
         """Set the parent page object"""
-        pass
+        raise NotImplementedError
 
 
 # ============================================================================
@@ -325,37 +327,37 @@ class CompositePageObject(PageObject):
     @abstractmethod
     def __getitem__(self, name):
         """Retrieve a child page object by name"""
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def __delitem__(self, name):
         """Remove a child page object by name"""
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def __iter__(self):
         """Iterate over names of child page objects"""
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def __len__(self):
         """Return the number of child page objects"""
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def add(self, obj):
         """Add a new child page object"""
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def clear(self):
         """Remove all child page objects"""
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def children(self):
         """Iterator over child page objects"""
-        pass
+        raise NotImplementedError
 
 
 class Page(CompositePageObject):
@@ -363,19 +365,19 @@ class Page(CompositePageObject):
     @abstractmethod
     def go(self):
         """Retrieve the page"""
-        pass
+        raise NotImplementedError
 
     @property
     @abstractmethod
     def url(self):
         """Return the current page's location"""
-        pass
+        raise NotImplementedError
 
     @property
     @abstractmethod
     def parser(self):
         """Return an lxml parser"""
-        pass
+        raise NotImplementedError
 
 
 # ============================================================================
