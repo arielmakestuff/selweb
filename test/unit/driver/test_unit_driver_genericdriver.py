@@ -19,8 +19,8 @@
 import pytest
 
 # Local imports
-from selweb.core import (BrowserDriver, FirefoxDriver, GenericDriver,
-                         PhantomJSDriver)
+from selweb.driver import (BrowserDriver, FirefoxDriver, GenericDriver,
+                           PhantomJSDriver)
 
 
 # ============================================================================
@@ -144,6 +144,11 @@ def test_exit_quit_called(capsys):
 # ============================================================================
 # Test BrowserDriver implementation registrations
 # ============================================================================
+
+
+def test_browserdriver_genericdriver():
+    """GenericDriver is registered as implementing BrowserDriver"""
+    assert issubclass(GenericDriver, BrowserDriver)
 
 
 def test_browserdriver_firefox():

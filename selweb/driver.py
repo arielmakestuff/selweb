@@ -34,15 +34,16 @@ class BrowserDriver(AbstractContextManager):
     @abstractmethod
     def mkdriver(self):
         """Return an instance of a selenium web driver"""
-        pass
+        raise NotImplementedError
 
     @property
     @abstractmethod
     def driver(self):
         """Return the underlying selenium webdriver object"""
-        pass
+        raise NotImplementedError
 
 
+@BrowserDriver.register
 class GenericDriver:
     __slots__ = ('_driveropt', '_drivercls', '_driver')
 
@@ -69,7 +70,6 @@ class GenericDriver:
         return self._driver
 
 
-@BrowserDriver.register
 class PhantomJSDriver(GenericDriver):
     __slots__ = ()
 
@@ -80,7 +80,6 @@ class PhantomJSDriver(GenericDriver):
         super().__init__(webdriver.PhantomJS, **options)
 
 
-@BrowserDriver.register
 class FirefoxDriver(GenericDriver):
     __slots__ = ()
 
